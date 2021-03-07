@@ -1,0 +1,26 @@
+What is a component – Provide a description (5 points)
+•	A component is the formation of a new variable caused by the combination of predictor variable. 
+
+Principal Component Analysis – Provide a description. (5 points)
+•	PCA is the transformation of data into orthogonal dimensions that are ranked by variance. It combines variables into new variables to simplify subsequent analysis. Its goal is to maximize data variability with as few components as possible. The end goal is to retain as much information as possible, while reducing variables
+•	Example: Wanting to find the variance between, crime, wealth, education, location, race, gender, etc.
+
+Data: USCrime
+Question: Which components have a correlation to crime?
+
+1.	Let perform a linear regression using all the variables
+> model <- lm(Crime~., data = uscrime)
+> summary(model)
+•	Looking at the summary, you can see that there are a few variables that have a p-value of 0.05 or higher. In fact, we have 7 of them: So, Po1, LF, Pop, NW, U2, and Time.
+
+2.	Let’s create another dataset without the response variable, which is Crime.
+>uscrimex <- uscrime[1:15]
+
+3.	 Now we will reduce the correlation among predictors using PCA, scale it and view the summary.
+> uscrimex.PCA <- prcomp(uscrimex, scale = TRUE)
+> summary(uscrimex.PCA)
+•	PC1 is explaining 0.413 of the variances, PC2 is explaining 0.1868 of the variances, PC3 is 0.1337 and PC4 is 0.07748. Those 4 PC together explain 0.77928 of the variances. The rest don’t offer much in terms of explanation.
+
+4.	We will plot it using screeplot, which shows the variance explained by each of the principal components.
+> screeplot(uscrimex.PCA, type = "lines", npcs = 15)
+•	Looking at the graph, PC1 – PC3 explain a lot of variance, PC4 has less variance, but still reasonable 
