@@ -1,0 +1,52 @@
+(a)	Describe:  What is difference between Multiple Regression and Logistic Regression? What circumstances might determine which to use? (10 points)
+
+Multiple Regression: a way to model the linear relationship between one quantitative response variable and one or more predictor variables.
+Circumstances: Multiple regression is best used when trying to combine many variables to get a result. Which variables are likely to predict crime? You would look at wealth, gender, location, education, etc.
+
+Logistic Regression: Regression model that uses an exponential function of variables to estimate a response that is either 0 and 1.
+Circumstances: regression is best when looking for a binary answer (yes or no, success or failure, etc). For example, does gender predict the probability of having an exercise induced chest pain? The answer would be yes or no
+
+
+Data being used: Since my government client deals with healthcare, I will be using the Heart Disease Data Set
+
+Logistic Regression
+Objective: What is the probability of a male experiencing exercise induced angina (severe pain in the chest)?
+
+1.	check structure of data
+> head(data)
+
+2.	Data’s actual heading was not added, so I will have to manually do it.
+> colnames(data) <- c("age", "sex", "cp", "trestbps", "chol", "fbs", "restscg", "thalach", "exang", "oldpeak", "slope", "ca", "thal", "heart_disease")
+
+3.	Look at data again to ensure the titles were added 
+
+4.	To make “exang” easier to read, I will change 1 = “YES” and 0 = “NO”
+> data[data$exang == 0,]$exang <- "NO"
+> data[data$exang == 1,]$exang <- "YES"
+> data$exang <- as.factor(data$exang)
+
+5.	I want to check the data distribution between men and women when it comes to “exang”
+•	There’s a fairly good distribution, though more men are having exercise induced angina than women
+
+6.	Let’s do a logistic regression and summarize the output
+> logistic_regression = glm(exang ~sex, data = data, family = "binomial")
+> summary(logistic_regression)
+
+Multiple Regression
+Objective: How well does wealth predict crime?
+Data: US Crime.
+
+1.	Plot data and display it
+> plot(uscrime$Wealth, uscrime$Crime)
+> abline(linear_model, col="red", lwd=2)
+
+2.	You can see a correlation, but doing a linear model will give a clear correlation
+> linear_model <- lm(Crime ~ Wealth, data = uscrime)
+> summary(linear_model)
+•	R-Squared = 0.195, p-value = 0.001902 say that wealth does a good job of predicting crime
+
+3.	For multiple regression, we will use wealth and education to predict crime.
+> multiple_regression <- lm(Crime ~ Wealth + Ed, data = uscrime)
+> summary(multiple_regression)
+
+
